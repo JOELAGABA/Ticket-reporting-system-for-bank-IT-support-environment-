@@ -1,58 +1,62 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+ 
+ 
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Project Report
+Centralized Incident Management Portal
+Prepared by: Agaba Joel Muhanguzi
 
-## About Laravel
+Introduction:
+The Incident management portal is a high performance web application that is designed to ease IT support workflows across bank branches. In a fast paced banking environment , hardware issues, system glitches and network failures must be logged, prioritized and resolved as quick as possible 
+This portal replaces the traditional and manual methods with a new database backed queue system. Branch Tellers can instantly report incidents, while IT Support technicians can dynamically assign, track and resolve tickets in real time. I built this system on the modern PHP framework called Laravel and the system is designed for maximum speed, implementing relational database integrity and robust security.
+Learning Journey
+A defining aspect of this project is the rapid technical upscaling required to build it. At the start of the activity, I had no prior experience with PHP, relational database migrations as well as applying modern Model View Controller software architecture.
+Through this i managed to learn and apply several industry standard concepts like;
+	Transitioning to backend frameworks as I was used to static frontend design and now to dynamic server side development using PHP.
+	I learnt database migrations which also included designing, altering and version control database schemes directly in PHP code, completely bypassing manual error prone database management tool adjustments.
+	I learnt trouble shooting and went deeper into DevOps literacy as I acquired critical command line debugging skills, successfully navigating local environments, resolving git-branch synchronization conflicts and finally pushing clean code to GitHub.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Core Objectives of the Project
+In order for me to prove the system is viable for Pride Bank, i built the portal to meet 4 operational standards as seen below;
+	Strict Data Validation: Ensuring all incoming tickets are automatically sanitized and verified before touching the database to prevent injection attacks or broken data.
+	Concurrency Protection: Implementing atomic locking to prevent race conditions such as two technicians accidentally modifying or overriding the same ticket at the exact same millisecond.
+	Background Processing: Offloading heavy tasks to background queue workers, ensuring a fast user experience
+	Auditability and Accountability: Automatically linking every ticket to its respective creator and technical assignee via database constraints.
+System Architecture
+Laravel uses an MVC pattern and this keeps our code clean, organized and scalable by separating applications into 3 distinct layers.
+ 
+The components 
+	The route (web.php): This is the entry point and It captures incoming web URLs and sends them to the correct Controller.
+	The controller (TicketController.php): This can be thought of as the brain of the system. It contains the business logic. It receives requests, fetches data, applies rules and passes information along.
+	The model (Ticket.php, User.php): This is the data manager of the system and It communicates directly with database tables using PHP, eliminating the need to write raw SQL.
+	The view (.blade.php): This is simply the presentation layer. It takes the data from the controller and formats it into clean HTML for the user's browser.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Database Schema & Relational Design
+Instead of manually building tables, I designed our entire database schema using Laravel Migrations. This ensures the structure is perfectly tracked via version control.
+Primary Application Tables
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Table Name	Primary Purpose 	Key fields
+Users 	Tracks accounts and access levels 	id, email (unique), password, role 
+Tickets	Core incident levels 	title, description, category, priority, status, branch_location
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+System Architecture Tables
+Table Name
+	Role	Technical Impact
+Cache and cache locks	Performance and concurrency	Caches frequent queries to speed up loading.
+Jobs and failed jobs	Asynchronous Processing	Offloads slow to a background queue so the browser never freezes.
+	
+Implementation of relations via foreign keys
+	user_id → users: Links the ticket directly to the reporting Teller. 
+	assigned_to → users.id: Links the ticket to the assigned IT Technician.
+Controller operations
+We structured the backend logic into 3 operations as seen below;
+	Dashboard Reading: This fetches tickets and their relationships in a single database query hence prevents performance lag and all metrics on the dashboard are computed dynamically.
+	Data Entry Validation: Enforces server side validation rules. It rejects empty inputs, limits text length and restricts the priority field strictly to; low, medium, high, critical.
+	Ticket Lifecycles: Automatically assigns an available IT Support user to the ticket as soon as its status moves from "Open" to "In Progress" or "Resolved". If moved back to "Open", it clears the assignee automatically.
+Dashboard
+ 
+Future development and implementation
+The project has been uploaded to github at https://github.com/JOELAGABA/Ticket-reporting-system-for-bank-IT-support-environment- and the intention is to keep building up this project with new information, standards and techniques that i will learn along the way.
+Conclusion
+This project has introduced me to the field of webapp development and skills that i can apply in the future to solve a variety of problems just like the one handled today. There’s still much to learn and build on but as a mock project, this has been a beneficial exercise.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
-```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
